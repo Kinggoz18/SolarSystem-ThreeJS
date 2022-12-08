@@ -2,13 +2,14 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.121.1/build/three.m
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js';
 import {Planet} from './js/Planet.js'
 
-let camera, controls, scene, renderer;
+let MainCamera, controls, scene, renderer;
 let planet;
 let SCREEN_WIDTH = window.innerWidth;
 let SCREEN_HEIGHT = window.innerHeight;
 let aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
 let cameraPerspectiveHelper;
 let cubes=[];
+let pivot;
 let flag = false;
 let numOfPlanets = 3;
 let cameraTheta = 0;
@@ -46,8 +47,8 @@ window.onload = function Init(){
 		location.z+=1;
 		cubes[i].add(directionalLight);
 	}
-	SetUpCamera();
-
+	MainCamera = createRotatingCamera(cubes[0]);
+	MainCamera.lookAt(scene.position)
 	//Setup camera controls
    	//OrbitControl();
 	//CubeLocation();
@@ -57,55 +58,59 @@ window.onload = function Init(){
 	render()
 
 }
+function createRotatingCamera(object) {
+	var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  
+	// Position the camera so that it is rotating around the object
+	camera.position.set(object.position.x + 5, object.position.y, object.position.z);
+  
+	// Create a new empty object to use as the camera's parent
+	pivot = new THREE.Object3D();
+	scene.add(pivot);
+  
+	// Add the camera as a child of the pivot object
+	pivot.add(camera);
 
+	return camera;
+  }
+  
 function rotateCamera(){
-	console.log(camera.position.x)
-	cameraTheta += 0.5;
-	cameraPos.x = radius * Math.sin( THREE.MathUtils.degToRad( cameraTheta ) );
-	//camera.position.x = radius * Math.sin( THREE.MathUtils.degToRad( cameraTheta ) );
-	//camera.position.y = radius * Math.sin( THREE.MathUtils.degToRad( cameraTheta ) );
-	camera.position.z = radius * Math.cos( THREE.MathUtils.degToRad( cameraTheta ) );
+	// Rotate the pivot object around the y-axis
+	MainCamera.rotation.z -= (-Math.PI / 2)/100;
+	console.log(pivot.rotation.y )
 }
-function SetUpCamera(){
-    camera = new THREE.PerspectiveCamera( 80, window.innerWidth / window.innerHeight, 1, 40 );
-    cameraPerspectiveHelper = new THREE.CameraHelper( camera);
-	camera.position.x = cameraPos.x;
-	camera.position.y = cameraPos.y;
-	camera.position.z = cameraPos.z;
-	camera.lookAt(scene.position);
-}
+//
+// function OrbitControl(){
+// 	//controls
 
-function OrbitControl(){
-	//controls
+// 	controls = new OrbitControls( camera, renderer.domElement );
 
-	controls = new OrbitControls( camera, renderer.domElement );
+// 	controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
 
-	controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
+// 	controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+// 	controls.dampingFactor = 0.05;
 
-	controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
-	controls.dampingFactor = 0.05;
+// 	controls.screenSpacePanning = false;
 
-	controls.screenSpacePanning = false;
+// 	controls.minDistance = 10;
+// 	controls.maxDistance = 10;
 
-	controls.minDistance = 10;
-	controls.maxDistance = 10;
-
-	controls.maxPolarAngle = Math.PI / 2;
-	CubeLocation();
-}
-function CubeLocation(){
-	if(cube.position.x >= (radius-1)){
-		cameraTheta=0.1;
-	}
-	cameraTheta +=0.1;
-	cube.position.x = 1.0;
-	cube.position.y = 2.0;
-	cube.position.z = radius * Math.sin( THREE.MathUtils.degToRad( cameraTheta ) );
-}
+// 	controls.maxPolarAngle = Math.PI / 2;
+// 	CubeLocation();
+// }
+// function CubeLocation(){
+// 	if(cube.position.x >= (radius-1)){
+// 		cameraTheta=0.1;
+// 	}
+// 	cameraTheta +=0.1;
+// 	cube.position.x = 1.0;
+// 	cube.position.y = 2.0;
+// 	cube.position.z = radius * Math.sin( THREE.MathUtils.degToRad( cameraTheta ) );
+// }
 function onWindowResize() {
 
-	camera.aspect = window.innerWidth / window.innerHeight;
-	camera.updateProjectionMatrix();
+	MainCamera.aspect = window.innerWidth / window.innerHeight;
+	MainCamera.updateProjectionMatrix();
 
 	renderer.setSize( window.innerWidth, window.innerHeight );
 
@@ -113,6 +118,6 @@ function onWindowResize() {
 function render() {
 	//CubeLocation()
 	rotateCamera()
-	renderer.render(scene, camera);
+	renderer.render(scene, MainCamera);
 	requestAnimationFrame(render);
 }
