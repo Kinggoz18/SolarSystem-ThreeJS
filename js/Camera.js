@@ -24,7 +24,7 @@ export class SolarCamera{
         var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
       
         // Position the camera so that it is rotating around the sun object
-        camera.position.set(0, this.sunObject.position.y + 20, 0);
+        camera.position.set(0, this.sunObject.position.y + 50, 0);
         camera.lookAt(this.sunObject.position);
         // Create a new empty object to use as the camera's parent
         this.pivot = new THREE.Object3D();
@@ -42,8 +42,7 @@ export class SolarCamera{
 
     //Functiont to update the camereas location
     SetCameraLocation(x, y, z){
-        this.cameraLoc.x = x;
-        this.cameraLoc.y = y;
-        this.cameraLoc.z = z;
+        camera.position.set(this.sunObject.position.x + x, this.sunObject.position.y + y, this.sunObject.position.z +z);
+        return this.camera;
     }
 }

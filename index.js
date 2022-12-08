@@ -4,9 +4,6 @@ import { SolarCamera } from './js/Camera.js';
 import {Planet} from './js/Planet.js'
 import { Sun } from './js/Sun.js';
 
-const ENTIRE_SCENE = 0, BLOOM_SCENE = 1;
-const bloomLayer = new THREE.Layers();
-bloomLayer.set( BLOOM_SCENE );
 
 let MainCamera, xCamera, controls, scene, renderer;
 let SCREEN_WIDTH = window.innerWidth;
@@ -15,16 +12,16 @@ let aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
 let pivot;
 let cubes=[];
 let sun, sunObject;
-let numOfPlanets = 3;
+let numOfPlanets = 9;
 let sunloc ={
 	x: 0.1,
 	y: 1.0,
 	z: 0.1
 }
 let location = {
-	x: 7,
+	x: 10,
 	y: 1.0,
-	z: 0.1
+	z: -3
 }
 
 Init()
@@ -90,8 +87,8 @@ function CreatePlanet(directionalLight){
 		let current= new Planet(2.6, location, './js/texture.jpg')
 		cubes[i] = current.Planet;
 		scene.add(cubes[i]);
-		location.z+=6;
 		cubes[i].add(directionalLight);
+		SetNextLocation()
 	}
 }
 // function OrbitControl(){
@@ -131,7 +128,16 @@ function onWindowResize() {
 }
 function render() {
 	//CubeLocation()
-	MainCamera = xCamera.rotateCamera()
+	//MainCamera = xCamera.rotateCamera()
 	renderer.render(scene, MainCamera);
 	requestAnimationFrame(render);
+}
+
+//Function set location for each planets
+function SetNextLocation(){
+	let z = Math.floor(Math.random() * 50);
+	let x = Math.floor(Math.random() * 10);
+	location.z= z;
+	location.x=x;
+	console.log(`Z: ${location.z} and X: ${location.x}`)
 }
