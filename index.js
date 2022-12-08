@@ -1,54 +1,59 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.121.1/build/three.module.js';
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js';
+import { SolarCamera } from './js/Camera.js';
 import {Planet} from './js/Planet.js'
+import { Sun } from './js/Sun.js';
 
-let MainCamera, controls, scene, renderer;
-let planet;
+const ENTIRE_SCENE = 0, BLOOM_SCENE = 1;
+const bloomLayer = new THREE.Layers();
+bloomLayer.set( BLOOM_SCENE );
+
+let MainCamera, xCamera, controls, scene, renderer;
 let SCREEN_WIDTH = window.innerWidth;
 let SCREEN_HEIGHT = window.innerHeight;
 let aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
-let cameraPerspectiveHelper;
-let cubes=[];
 let pivot;
-let flag = false;
+let cubes=[];
+let sun, sunObject;
 let numOfPlanets = 3;
-let cameraTheta = 0;
-let cameraPos ={
-	x: 2.0,
-	y: 2.0,
-	z: 1.0
+let sunloc ={
+	x: 0.1,
+	y: 1.0,
+	z: 0.1
 }
-const pointer = new THREE.Vector2();
-const radius = 7;
-let loc = document.getElementById('loc');
+let location = {
+	x: 7,
+	y: 1.0,
+	z: 0.1
+}
 
-window.onload = function Init(){
+Init()
 
-    scene = new THREE.Scene();
+function Init(){
 
-	renderer = new THREE.WebGLRenderer();
+	SetUpScene();
+	const canvas = document.querySelector('#canvas');
+	renderer = new THREE.WebGLRenderer({canvas});
 	renderer.setClearColor(0xEEEEEE);
-	renderer.setSize(1080, 720);
+	renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	document.body.appendChild(renderer.domElement);
 
-	//Light
-	const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+	//Set up our sun
+	sun = new Sun(4.0, sunloc, './js/sun.jpg');
+	sunObject = sun.Sun;
+	scene.add(sunObject);
 
-	let location = {
-		x: 0.1,
-		y: 1.0,
-		z: 0.1
-	}
-	//Create i number of planets
-	for(let i = 0; i < numOfPlanets; i++){
-		let current= new Planet(0.4, location, './texture.jpg')
-		cubes[i] = current.Planet;
-		scene.add(cubes[i]);
-		location.z+=1;
-		cubes[i].add(directionalLight);
-	}
-	MainCamera = createRotatingCamera(cubes[0]);
-	MainCamera.lookAt(scene.position)
+	//Create light and pass it for each planets
+	const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+	CreatePlanet(directionalLight);
+
+	//Set uo the camera
+	xCamera= new SolarCamera(sunObject, scene);
+	pivot = xCamera.Pivot;
+	scene.add(pivot);
+	
+	MainCamera = xCamera.RotatingCamera;
+
 	//Setup camera controls
    	//OrbitControl();
 	//CubeLocation();
@@ -58,28 +63,37 @@ window.onload = function Init(){
 	render()
 
 }
-function createRotatingCamera(object) {
-	var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  
-	// Position the camera so that it is rotating around the object
-	camera.position.set(object.position.x + 5, object.position.y, object.position.z);
-  
-	// Create a new empty object to use as the camera's parent
-	pivot = new THREE.Object3D();
-	scene.add(pivot);
-  
-	// Add the camera as a child of the pivot object
-	pivot.add(camera);
-
-	return camera;
-  }
-  
-function rotateCamera(){
-	// Rotate the pivot object around the y-axis
-	MainCamera.rotation.z -= (-Math.PI / 2)/100;
-	console.log(pivot.rotation.y )
+//Function to setup scene
+function SetUpScene()
+{
+	//Set up skybox texture
+	const loader = new THREE.CubeTextureLoader();
+	loader.setPath( 'js/bkg/blue/' );
+	const textureCube = loader.load( [
+		'bkg1_right.png', 'bkg1_left.png',
+		'bkg1_top.png', 'bkg1_bot.png',
+		'bkg1_front.png', 'bkg1_back.png'
+	] );
+	scene = new THREE.Scene();
+	scene.background = textureCube;
 }
-//
+//Functiont to create the planets
+function CreatePlanet(directionalLight){
+	let bulbMat = new THREE.MeshStandardMaterial( {
+		emissive: 0xffffee,
+		emissiveIntensity: 1,
+		color: 0x000000
+	} );
+
+	//Create i number of planets
+	for(let i = 0; i < numOfPlanets; i++){
+		let current= new Planet(2.6, location, './js/texture.jpg')
+		cubes[i] = current.Planet;
+		scene.add(cubes[i]);
+		location.z+=6;
+		cubes[i].add(directionalLight);
+	}
+}
 // function OrbitControl(){
 // 	//controls
 
@@ -117,7 +131,7 @@ function onWindowResize() {
 }
 function render() {
 	//CubeLocation()
-	rotateCamera()
+	MainCamera = xCamera.rotateCamera()
 	renderer.render(scene, MainCamera);
 	requestAnimationFrame(render);
 }

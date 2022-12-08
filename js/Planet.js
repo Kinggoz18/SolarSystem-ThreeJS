@@ -20,8 +20,8 @@ export class Planet{
 	//Creates a planet
 	CreatePlanet(){
 		//Load material 
-		let text = new THREE.TextureLoader().load( `./js/texture.jpg`);
-		const material = new THREE.MeshBasicMaterial( { map: text } );
+		let text = new THREE.TextureLoader().load( `${this.texture}`);
+		const material = new THREE.MeshBasicMaterial({ map: text,});
 		//planet
 		var sphere = new THREE.SphereGeometry( this.planetSize, 34, 32 );
 		this.planet = new THREE.Mesh(sphere, material);
