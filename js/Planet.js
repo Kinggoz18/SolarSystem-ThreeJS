@@ -4,9 +4,9 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.121.1/build/three.m
 export class Planet{
 	
 	//Constructor to set planets gloabl variables
-    constructor(planetSize, location, texture){
+    constructor(name, planetSize, texture){
+		this.name = name;
         this.planetSize = planetSize; 		//Planets radius
-		this.location = location;	//plaents location in the space
 		this.texture = texture;
 		this.planet = null;
 		//Set up the planet
@@ -25,9 +25,11 @@ export class Planet{
 		//planet
 		var sphere = new THREE.SphereGeometry( this.planetSize, 34, 32 );
 		this.planet = new THREE.Mesh(sphere, material);
+	}
+	GetLocation(x, y, z){
 		//Set the planets location in the space
-		this.planet.position.x = this.location.x;
-		this.planet.position.y = this.location.y
-		this.planet.position.z = this.location.z;
+		this.planet.position.x = x;
+		this.planet.position.y = y;
+		this.planet.position.z = z;
 	}
 }

@@ -21,7 +21,7 @@ export class SolarCamera{
     }
     //Create the rotating camera
     createRotatingCamera() {
-        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        var camera = new THREE.PerspectiveCamera(96, window.innerWidth / window.innerHeight, 0.1, 1000);
       
         // Position the camera so that it is rotating around the sun object
         camera.position.set(0, this.sunObject.position.y + 50, 0);

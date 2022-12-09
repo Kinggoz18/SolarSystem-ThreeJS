@@ -1,3 +1,4 @@
+'use strict';
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.121.1/build/three.module.js';
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js';
 import { SolarCamera } from './js/Camera.js';
@@ -12,16 +13,13 @@ let aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
 let pivot;
 let cubes=[];
 let sun, sunObject;
-let numOfPlanets = 9;
+let numOfPlanets = 8;
+let radius = 30;
+let cameraTheta = 0;
 let sunloc ={
 	x: 0.1,
 	y: 1.0,
 	z: 0.1
-}
-let location = {
-	x: 10,
-	y: 1.0,
-	z: -3
 }
 
 Init()
@@ -36,7 +34,7 @@ function Init(){
 	document.body.appendChild(renderer.domElement);
 
 	//Set up our sun
-	sun = new Sun(4.0, sunloc, './js/sun.jpg');
+	sun = new Sun(8.5, sunloc, './js/sun.jpg');
 	sunObject = sun.Sun;
 	scene.add(sunObject);
 
@@ -53,7 +51,6 @@ function Init(){
 
 	//Setup camera controls
    	//OrbitControl();
-	//CubeLocation();
 
 	//Camera
 	window.addEventListener( 'resize', onWindowResize );
@@ -84,17 +81,13 @@ function CreatePlanet(directionalLight){
 
 	//Create i number of planets
 	for(let i = 0; i < numOfPlanets; i++){
-		let current= new Planet(2.6, location, './js/texture.jpg')
-		cubes[i] = current.Planet;
-		scene.add(cubes[i]);
-		cubes[i].add(directionalLight);
-		SetNextLocation()
+		InitializePlanet(i, directionalLight);
 	}
 }
 // function OrbitControl(){
 // 	//controls
 
-// 	controls = new OrbitControls( camera, renderer.domElement );
+// 	controls = new OrbitControls( MainCamera, renderer.domElement );
 
 // 	controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
 
@@ -103,21 +96,20 @@ function CreatePlanet(directionalLight){
 
 // 	controls.screenSpacePanning = false;
 
-// 	controls.minDistance = 10;
-// 	controls.maxDistance = 10;
+// 	controls.minDistance = 100;
+// 	controls.maxDistance = 100;
 
 // 	controls.maxPolarAngle = Math.PI / 2;
-// 	CubeLocation();
+
 // }
-// function CubeLocation(){
-// 	if(cube.position.x >= (radius-1)){
-// 		cameraTheta=0.1;
-// 	}
-// 	cameraTheta +=0.1;
-// 	cube.position.x = 1.0;
-// 	cube.position.y = 2.0;
-// 	cube.position.z = radius * Math.sin( THREE.MathUtils.degToRad( cameraTheta ) );
-// }
+function CubeLocation(){
+	//USE TREE HERE MAYBE 
+	cubes.forEach(element => {
+		cameraTheta +=0.7;
+		element.position.z = radius * Math.cos( THREE.MathUtils.degToRad( cameraTheta ) );
+		element.position.x = radius * Math.sin( THREE.MathUtils.degToRad( cameraTheta ) );
+	});
+}
 function onWindowResize() {
 
 	MainCamera.aspect = window.innerWidth / window.innerHeight;
@@ -127,17 +119,118 @@ function onWindowResize() {
 
 }
 function render() {
-	//CubeLocation()
-	//MainCamera = xCamera.rotateCamera()
+	//CubeLocation()		//Uncomment to test
+	MainCamera = xCamera.rotateCamera()	//Uncomment to test
 	renderer.render(scene, MainCamera);
 	requestAnimationFrame(render);
 }
 
-//Function set location for each planets
-function SetNextLocation(){
-	let z = Math.floor(Math.random() * 50);
-	let x = Math.floor(Math.random() * 10);
-	location.z= z;
-	location.x=x;
-	console.log(`Z: ${location.z} and X: ${location.x}`)
+function InitializePlanet(i, directionalLight){
+	let current;
+	//Switch statement to set the objects position
+	switch (i)
+	{
+		case 0:
+			{
+				console.log('Mercury')
+				current= new Planet('Mercury', 1.2, './js/texture.jpg')
+				current.GetLocation(1, 1.0, -13);
+				cubes[i] = current.Planet;
+				scene.add(cubes[i]);
+    			
+				cubes[i].lookAt(sunObject.position);
+				cubes[i].add(directionalLight);
+				break;
+			}
+		case 1:
+			{
+				console.log('Venus')
+				current= new Planet('Venus', 1.6, './js/texture2.jpg')
+				current.GetLocation(1, 1.0, -18);
+				cubes[i] = current.Planet;
+				scene.add(cubes[i]);
+    			
+				cubes[i].lookAt(sunObject.position);
+				cubes[i].add(directionalLight);
+				break;
+			}
+		case 2:
+			{
+				console.log('Earth')
+				current= new Planet('Earth', 1.6, './js/texture3.jpg')
+				current.GetLocation(1, 1.0, -22);
+				cubes[i] = current.Planet;
+				scene.add(cubes[i]);
+    			
+				cubes[i].lookAt(sunObject.position);
+				cubes[i].add(directionalLight);
+				break;
+			}
+		case 3:
+			{
+				console.log('Mars')
+				current= new Planet('Mars', 1.6, './js/texture4.jpg')
+				current.GetLocation(1, 1.0, -27);
+				cubes[i] = current.Planet;
+				scene.add(cubes[i]);
+    			
+				cubes[i].lookAt(sunObject.position);
+				cubes[i].add(directionalLight);
+				break;
+			}
+		case 4:
+			{
+				console.log('Jupiter')
+				current= new Planet('Jupiter', 1.6, './js/texture5.jpg')
+				current.GetLocation(1, 1.0, -32);
+				cubes[i] = current.Planet;
+				scene.add(cubes[i]);
+    			
+				cubes[i].lookAt(sunObject.position);
+				cubes[i].add(directionalLight);
+				break;
+			}
+		case 5:
+			{
+				console.log('Saturn')
+				current= new Planet('Saturn', 1.6, './js/texture6.jpg')
+				current.GetLocation(1, 1.0, -39);
+				cubes[i] = current.Planet;
+				scene.add(cubes[i]);
+    			
+				cubes[i].lookAt(sunObject.position);
+				cubes[i].add(directionalLight);
+				break;
+			}
+		case 6:
+			{
+				console.log('Uranus')
+				current= new Planet('Uranus', 1.6, './js/texture7.jpg')
+				current.GetLocation(1, 1.0, -47);
+				cubes[i] = current.Planet;
+				scene.add(cubes[i]);
+    			
+				cubes[i].lookAt(sunObject.position);
+				cubes[i].add(directionalLight);
+				break;
+			}
+		case 7:
+			{
+				console.log('Neptune')
+				current= new Planet('Neptune', 1.6, './js/texture8.jpg')
+				current.GetLocation(1, 1.0, -54);
+				cubes[i] = current.Planet;
+				scene.add(cubes[i]);
+    			
+				cubes[i].lookAt(sunObject.position);
+				cubes[i].add(directionalLight);
+				break;
+			}
+		default:
+			{
+				console.log('Inavlid Range');
+				break;
+			}
+		
+	}
 }
