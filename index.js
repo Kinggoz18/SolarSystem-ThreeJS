@@ -14,7 +14,8 @@ let pivot;
 let cubes=[];
 let sun, sunObject;
 let numOfPlanets = 8;
-let radius = 30;
+let orbitSpeed = [1, 5, 0.09, 11, 1, 0.05, 5, 10]	//The distance of each planet from the sun
+let orbit = [13, 18, 22, 27, 32, 39, 47, 54]	//The distance of each planet from the sun
 let cameraTheta = 0;
 let sunloc ={
 	x: 0.1,
@@ -50,7 +51,7 @@ function Init(){
 	MainCamera = xCamera.RotatingCamera;
 
 	//Setup camera controls
-   	//OrbitControl();
+   	OrbitControl();
 
 	//Camera
 	window.addEventListener( 'resize', onWindowResize );
@@ -84,30 +85,32 @@ function CreatePlanet(directionalLight){
 		InitializePlanet(i, directionalLight);
 	}
 }
-// function OrbitControl(){
-// 	//controls
+function OrbitControl(){
+	//controls
 
-// 	controls = new OrbitControls( MainCamera, renderer.domElement );
+	controls = new OrbitControls( MainCamera, renderer.domElement );
 
-// 	controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
+	//controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
 
-// 	controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
-// 	controls.dampingFactor = 0.05;
+	controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+	controls.dampingFactor = 0.05;
 
-// 	controls.screenSpacePanning = false;
+	controls.screenSpacePanning = false;
 
-// 	controls.minDistance = 100;
-// 	controls.maxDistance = 100;
+	controls.minDistance = 10;
+	controls.maxDistance = 100;
+	controls.maxPolarAngle = Math.PI / 2;
 
-// 	controls.maxPolarAngle = Math.PI / 2;
-
-// }
+}
 function CubeLocation(){
 	//USE TREE HERE MAYBE 
+	let i =0;
 	cubes.forEach(element => {
-		cameraTheta +=0.7;
-		element.position.z = radius * Math.cos( THREE.MathUtils.degToRad( cameraTheta ) );
-		element.position.x = radius * Math.sin( THREE.MathUtils.degToRad( cameraTheta ) );
+		orbitSpeed[i] +=0.07;
+		//element.position.z = Math.cos(cameraTheta) * orbit[i];
+		//element.position.x = Math.cos(cameraTheta) * orbit[i];
+		element.position.set(Math.cos(orbitSpeed[i]) * orbit[i], 0, Math.sin(orbitSpeed[i]) * orbit[i]);
+		i+=1;
 	});
 }
 function onWindowResize() {
@@ -119,7 +122,7 @@ function onWindowResize() {
 
 }
 function render() {
-	//CubeLocation()		//Uncomment to test
+	CubeLocation()		//Uncomment to test
 	MainCamera = xCamera.rotateCamera()	//Uncomment to test
 	renderer.render(scene, MainCamera);
 	requestAnimationFrame(render);

@@ -4,11 +4,12 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.121.1/build/three.m
 export class Planet{
 	
 	//Constructor to set planets gloabl variables
-    constructor(name, planetSize, texture){
+    constructor(name, planetSize, texture, orbit){
 		this.name = name;
         this.planetSize = planetSize; 		//Planets radius
 		this.texture = texture;
 		this.planet = null;
+		this.orbit = 0;
 		//Set up the planet
 		this.CreatePlanet();
 		this.orbitRadius;
@@ -16,6 +17,14 @@ export class Planet{
 	//Returns this.plaet
 	get Planet(){
 		return this.planet;
+	}
+	//Get the orbit
+	get Orbit(){
+		return this.orbit;
+	}
+	//set the planets orbit
+	getOrbit(i){
+		this.orbit+=i;
 	}
 	//Creates a planet
 	CreatePlanet(){
