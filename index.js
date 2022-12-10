@@ -15,6 +15,7 @@ let cubes=[];
 let sun, sunObject;
 let numOfPlanets = 8;
 let orbitSpeed = [1, 5, 0.09, 11, 1, 0.05, 5, 10]	//The distance of each planet from the sun
+let Speed = [0.1, 0.05, 0.09, 0.05, 0.1, 0.05, 0.05, 0.050]	//The distance of each planet from the sun
 let orbit = [13, 18, 22, 27, 32, 39, 47, 54]	//The distance of each planet from the sun
 let cameraTheta = 0;
 let sunloc ={
@@ -106,7 +107,7 @@ function CubeLocation(){
 	//USE TREE HERE MAYBE 
 	let i =0;
 	cubes.forEach(element => {
-		orbitSpeed[i] +=0.07;
+		orbitSpeed[i] +=(Speed[i]/10)
 		//element.position.z = Math.cos(cameraTheta) * orbit[i];
 		//element.position.x = Math.cos(cameraTheta) * orbit[i];
 		element.position.set(Math.cos(orbitSpeed[i]) * orbit[i], 0, Math.sin(orbitSpeed[i]) * orbit[i]);
