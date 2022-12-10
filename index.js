@@ -137,7 +137,7 @@ function InitializePlanet(i, directionalLight){
 		case 0:
 			{
 				console.log('Mercury')
-				current= new Planet('Mercury', 1.2, './js/texture.jpg')
+				current= new Planet('Mercury', 1, './js/texture.jpg')
 				current.GetLocation(1, 1.0, -13);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
@@ -149,7 +149,7 @@ function InitializePlanet(i, directionalLight){
 		case 1:
 			{
 				console.log('Venus')
-				current= new Planet('Venus', 1.6, './js/texture2.jpg')
+				current= new Planet('Venus', 1.4, './js/texture2.jpg')
 				current.GetLocation(1, 1.0, -18);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
@@ -161,7 +161,7 @@ function InitializePlanet(i, directionalLight){
 		case 2:
 			{
 				console.log('Earth')
-				current= new Planet('Earth', 1.6, './js/texture3.jpg')
+				current= new Planet('Earth', 1.8, './js/texture3.jpg')
 				current.GetLocation(1, 1.0, -22);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
@@ -173,7 +173,7 @@ function InitializePlanet(i, directionalLight){
 		case 3:
 			{
 				console.log('Mars')
-				current= new Planet('Mars', 1.6, './js/texture4.jpg')
+				current= new Planet('Mars', 1.4, './js/texture4.jpg')
 				current.GetLocation(1, 1.0, -27);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
@@ -185,7 +185,7 @@ function InitializePlanet(i, directionalLight){
 		case 4:
 			{
 				console.log('Jupiter')
-				current= new Planet('Jupiter', 1.6, './js/texture5.jpg')
+				current= new Planet('Jupiter', 3, './js/texture5.jpg')
 				current.GetLocation(1, 1.0, -32);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
@@ -197,7 +197,7 @@ function InitializePlanet(i, directionalLight){
 		case 5:
 			{
 				console.log('Saturn')
-				current= new Planet('Saturn', 1.6, './js/texture6.jpg')
+				current= new Planet('Saturn', 2, './js/texture6.jpg')
 				current.GetLocation(1, 1.0, -39);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
@@ -209,7 +209,7 @@ function InitializePlanet(i, directionalLight){
 		case 6:
 			{
 				console.log('Uranus')
-				current= new Planet('Uranus', 1.6, './js/texture7.jpg')
+				current= new Planet('Uranus', 2.6, './js/texture7.jpg')
 				current.GetLocation(1, 1.0, -47);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
@@ -221,7 +221,7 @@ function InitializePlanet(i, directionalLight){
 		case 7:
 			{
 				console.log('Neptune')
-				current= new Planet('Neptune', 1.6, './js/texture8.jpg')
+				current= new Planet('Neptune', 2.4, './js/texture8.jpg')
 				current.GetLocation(1, 1.0, -54);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
