@@ -8,6 +8,7 @@ export class SolarCamera{
         this.sunObject = sunObject;
         this.camera = this.createRotatingCamera()
         this.pivot;
+        this.isRotate = false;
         this.scene = scene; //For testing camera.LookAt
     }
 
@@ -18,6 +19,15 @@ export class SolarCamera{
     //Get the pivot
     get Pivot(){
         return this.pivot;
+    }
+    //Get is rotate
+    get IsRotate(){
+        return this.isRotate;
+    }
+    //set is rotate
+    SetIsRotate(){
+        this.isRotate = this.isRotate === false ? true : false;
+		console.log(this.isRotate)
     }
     //Create the rotating camera
     createRotatingCamera() {
@@ -37,6 +47,11 @@ export class SolarCamera{
     rotateCamera(){
         // Rotate the pivot object around the y-axis
         this.camera.rotation.z += 0.01;
+        return this.camera;
+    }
+    rotateCameraOff(){
+        // Rotate the pivot object around the y-axis
+        this.camera.rotation.z += 0;
         return this.camera;
     }
 

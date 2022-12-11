@@ -35,12 +35,23 @@
 				background-color: gray;
 				width: 300px;
 			}
+			#details div{
+				font-size: 1.2em;
+				border-bottom: solid white 1px;
+				margin: 0.3em;
+				padding: 0.3em;
+				background-color: dimgray;
+				border-radius: 0.2em;
+			}
 		</style>
 		<script type="module" src="./index.js"></script>
 	</head>
 		<body>
 			<div id="control">
 				<h1>COIS 4480 Final Project</h1>
+				<div>
+					<button id="toggleCam">Toggle Camera Rotation</button>
+				</div>
 				<h3>Planet Rotation Speed</h3>
 				<div>
 					<p>Mercury</p>
@@ -78,7 +89,7 @@
 			</div>
 			<div id="details" class="hide">
 				<h3>Object Details</h3>
-				<p>Click on any planet</p>
+				<p>Click on any planet. Use mouse to navigate the space</p>
 				<h3 id="obj"></h3>
 				<span id="dts"></span>
 			</div>

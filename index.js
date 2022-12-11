@@ -24,6 +24,9 @@ let orbitSpeed = [1, 5, 0.09, 11, 1, 0.05, 5, 10]	//Planets initial orbit speed
 let Speed = [0.16, 0.1, 0.056, 0.04, 0.02, 0.01, 0.009, 0.008]	//the speed of the planets orbit
 let orbit = [13, 20, 27, 32, 37, 43, 49, 54]	//The distance of each planet from the sun
 
+let flag;
+let toggleCamera = document.getElementById('toggleCam');
+
 let names = ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']
 let sunloc ={
 	x: 0.1,
@@ -72,9 +75,13 @@ function Init(){
 	//Setup camera controls
    	OrbitControl();
 	GUIControl();
+	toggleCamera.addEventListener('click',()=>{
+		xCamera.SetIsRotate()
+	});
+
 	//Camera
 	window.addEventListener( 'resize', onWindowResize );
-	render()
+	render(flag)
 
 }
 
@@ -127,9 +134,9 @@ function onWindowResize() {
 	renderer.setSize( window.innerWidth, window.innerHeight );
 
 }
-function render() {
+function render(flag) {
 	CubeLocation()		//Uncomment to test
-	//MainCamera = xCamera.rotateCamera()	//Uncomment to test
+	ToogleRotation(flag)
 	renderer.render(scene, MainCamera);
 	requestAnimationFrame(render);
 }
@@ -140,7 +147,6 @@ function InitializePlanet(i, directionalLight){
 	{
 		case 0:
 			{
-				console.log(names[i])
 				current= new Planet(names[i], 1.2, './js/texture.jpg')
 				planetObj[i] = current;
 				current.GetLocation(1, 1.0, -13);
@@ -153,7 +159,6 @@ function InitializePlanet(i, directionalLight){
 			}
 		case 1:
 			{
-				console.log(names[i])
 				current= new Planet(names[i], 1.6, './js/texture2.jpg')
 				planetObj[i] = current;
 				current.GetLocation(1, 1.0, -18);
@@ -166,7 +171,6 @@ function InitializePlanet(i, directionalLight){
 			}
 		case 2:
 			{
-				console.log(names[i])
 				current= new Planet(names[i], 1.6, './js/texture3.jpg')
 				planetObj[i] = current;
 				current.GetLocation(1, 1.0, -22);
@@ -179,7 +183,6 @@ function InitializePlanet(i, directionalLight){
 			}
 		case 3:
 			{
-				console.log(names[i])
 				current= new Planet(names[i], 1.6, './js/texture4.jpg')
 				planetObj[i] = current;
 				current.GetLocation(1, 1.0, -27);
@@ -192,7 +195,6 @@ function InitializePlanet(i, directionalLight){
 			}
 		case 4:
 			{
-				console.log(names[i])
 				current= new Planet(names[i], 1.6, './js/texture5.jpg')
 				planetObj[i] = current;
 				current.GetLocation(1, 1.0, -32);
@@ -205,7 +207,6 @@ function InitializePlanet(i, directionalLight){
 			}
 		case 5:
 			{
-				console.log(names[i])
 				current= new Planet(names[i], 1.6, './js/texture6.jpg')
 				planetObj[i] = current;
 				current.GetLocation(1, 1.0, -39);
@@ -218,7 +219,6 @@ function InitializePlanet(i, directionalLight){
 			}
 		case 6:
 			{
-				console.log(names[i])
 				current= new Planet(names[i], 1.6, './js/texture7.jpg')
 				planetObj[i] = current;
 				current.GetLocation(1, 1.0, -47);
@@ -231,7 +231,6 @@ function InitializePlanet(i, directionalLight){
 			}
 		case 7:
 			{
-				console.log(names[i])
 				current= new Planet(names[i], 1.6, './js/texture8.jpg')
 				planetObj[i] = current;
 				current.GetLocation(1, 1.0, -54);
@@ -259,7 +258,6 @@ function GUIControl(){
 	{
 		planetControl[i].addEventListener('input', (event)=>{
 			let value = planetControl[i].value/100;
-			console.log(value)
 			Speed[i]=value;
 		})
 	}
@@ -284,7 +282,6 @@ function Picking(event){
 	let objInfo = document.getElementById('dts');
     cubes.forEach((o, i) => {
         if (intersectedObject === o) {
-			console.log(planetObj[i].Name);
 			objName.innerText =`${planetObj[i].Name}`;
 			objInfo.innerHTML = `${details[planetObj[i].Name]}`
 			cubes[i].material = planetObj[i].ChangeMesh();
@@ -294,4 +291,13 @@ function Picking(event){
 			cubes[i].material = planetObj[i].RevertMesh();
 		  }
     })
+}
+function ToogleRotation(flag){
+
+		if(xCamera.IsRotate){
+			return xCamera.rotateCamera()
+		}
+		else{
+			return xCamera.rotateCameraOff()
+		}
 }
