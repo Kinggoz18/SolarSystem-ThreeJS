@@ -17,6 +17,7 @@ let numOfPlanets = 8;
 let orbitSpeed = [1, 5, 0.09, 11, 1, 0.05, 5, 10]	//The distance of each planet from the sun
 let Speed = [0.1, 0.05, 0.09, 0.05, 0.1, 0.05, 0.05, 0.050]	//The distance of each planet from the sun
 let orbit = [13, 18, 22, 27, 32, 39, 47, 54]	//The distance of each planet from the sun
+let names = ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']
 let cameraTheta = 0;
 let sunloc ={
 	x: 0.1,
@@ -43,7 +44,7 @@ function Init(){
 	//Create light and pass it for each planets
 	const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
 	CreatePlanet(directionalLight);
-
+	scene.add(directionalLight);
 	//Set uo the camera
 	xCamera= new SolarCamera(sunObject, scene);
 	pivot = xCamera.Pivot;
@@ -59,6 +60,7 @@ function Init(){
 	render()
 
 }
+
 //Function to setup scene
 function SetUpScene()
 {
@@ -75,12 +77,6 @@ function SetUpScene()
 }
 //Functiont to create the planets
 function CreatePlanet(directionalLight){
-	let bulbMat = new THREE.MeshStandardMaterial( {
-		emissive: 0xffffee,
-		emissiveIntensity: 1,
-		color: 0x000000
-	} );
-
 	//Create i number of planets
 	for(let i = 0; i < numOfPlanets; i++){
 		InitializePlanet(i, directionalLight);
@@ -88,16 +84,10 @@ function CreatePlanet(directionalLight){
 }
 function OrbitControl(){
 	//controls
-
 	controls = new OrbitControls( MainCamera, renderer.domElement );
-
-	//controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
-
 	controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
 	controls.dampingFactor = 0.05;
-
 	controls.screenSpacePanning = false;
-
 	controls.minDistance = 10;
 	controls.maxDistance = 100;
 	controls.maxPolarAngle = Math.PI / 2;
@@ -108,8 +98,6 @@ function CubeLocation(){
 	let i =0;
 	cubes.forEach(element => {
 		orbitSpeed[i] +=(Speed[i]/10)
-		//element.position.z = Math.cos(cameraTheta) * orbit[i];
-		//element.position.x = Math.cos(cameraTheta) * orbit[i];
 		element.position.set(Math.cos(orbitSpeed[i]) * orbit[i], 0, Math.sin(orbitSpeed[i]) * orbit[i]);
 		i+=1;
 	});
@@ -124,7 +112,7 @@ function onWindowResize() {
 }
 function render() {
 	CubeLocation()		//Uncomment to test
-	MainCamera = xCamera.rotateCamera()	//Uncomment to test
+	//MainCamera = xCamera.rotateCamera()	//Uncomment to test
 	renderer.render(scene, MainCamera);
 	requestAnimationFrame(render);
 }
@@ -136,8 +124,8 @@ function InitializePlanet(i, directionalLight){
 	{
 		case 0:
 			{
-				console.log('Mercury')
-				current= new Planet('Mercury', 1, './js/texture.jpg')
+				console.log(names[i])
+				current= new Planet(names[i], 1.2, './js/texture.jpg')
 				current.GetLocation(1, 1.0, -13);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
@@ -148,8 +136,8 @@ function InitializePlanet(i, directionalLight){
 			}
 		case 1:
 			{
-				console.log('Venus')
-				current= new Planet('Venus', 1.4, './js/texture2.jpg')
+				console.log(names[i])
+				current= new Planet(names[i], 1.6, './js/texture2.jpg')
 				current.GetLocation(1, 1.0, -18);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
@@ -160,8 +148,8 @@ function InitializePlanet(i, directionalLight){
 			}
 		case 2:
 			{
-				console.log('Earth')
-				current= new Planet('Earth', 1.8, './js/texture3.jpg')
+				console.log(names[i])
+				current= new Planet(names[i], 1.6, './js/texture3.jpg')
 				current.GetLocation(1, 1.0, -22);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
@@ -172,8 +160,8 @@ function InitializePlanet(i, directionalLight){
 			}
 		case 3:
 			{
-				console.log('Mars')
-				current= new Planet('Mars', 1.4, './js/texture4.jpg')
+				console.log(names[i])
+				current= new Planet(names[i], 1.6, './js/texture4.jpg')
 				current.GetLocation(1, 1.0, -27);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
@@ -184,8 +172,8 @@ function InitializePlanet(i, directionalLight){
 			}
 		case 4:
 			{
-				console.log('Jupiter')
-				current= new Planet('Jupiter', 3, './js/texture5.jpg')
+				console.log(names[i])
+				current= new Planet(names[i], 1.6, './js/texture5.jpg')
 				current.GetLocation(1, 1.0, -32);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
@@ -196,8 +184,8 @@ function InitializePlanet(i, directionalLight){
 			}
 		case 5:
 			{
-				console.log('Saturn')
-				current= new Planet('Saturn', 2, './js/texture6.jpg')
+				console.log(names[i])
+				current= new Planet(names[i], 1.6, './js/texture6.jpg')
 				current.GetLocation(1, 1.0, -39);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
@@ -208,8 +196,8 @@ function InitializePlanet(i, directionalLight){
 			}
 		case 6:
 			{
-				console.log('Uranus')
-				current= new Planet('Uranus', 2.6, './js/texture7.jpg')
+				console.log(names[i])
+				current= new Planet(names[i], 1.6, './js/texture7.jpg')
 				current.GetLocation(1, 1.0, -47);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
@@ -220,8 +208,8 @@ function InitializePlanet(i, directionalLight){
 			}
 		case 7:
 			{
-				console.log('Neptune')
-				current= new Planet('Neptune', 2.4, './js/texture8.jpg')
+				console.log(names[i])
+				current= new Planet(names[i], 1.6, './js/texture8.jpg')
 				current.GetLocation(1, 1.0, -54);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);

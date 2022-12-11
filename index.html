@@ -10,10 +10,60 @@
 				min-width: 100vw;
 				min-width: 100vh;
 			}
+			#control{
+				position: absolute;
+				display: flex;
+				flex-direction: column;
+				padding: 1em;
+				color: white;
+				background-color: gray;
+			}
+			#control div{
+				display: flex;
+			}
+			div p{
+				margin-right: 0.5em;
+			}
 		</style>
 		<script type="module" src="./index.js"></script>
 	</head>
 		<body>
+			<div id="control">
+				<h3>Planet Rotation Speed</h3>
+				<div>
+					<p>Mercury</p>
+					<input type="range" id="Mercury">
+				</div>
+				<div>
+					<p>Venus</p>
+					<input type="range" id="Venus">
+				</div>
+				<div>
+					<p>Earth</p>
+					<input type="range" id="Earth">
+				</div>
+				<div>
+					<p>Mars</p>
+					<input type="range" id="Mars">
+				</div>
+				<div>
+					<p>Jupiter</p>
+					<input type="range" id="Jupiter">
+				</div>
+				<div>
+					<p>Saturn</p>
+					<input type="range" id="Saturn">
+				</div>
+				<div>
+					<p>Uranus</p>
+					<input type="range" id="Uranus">
+				</div>
+				<div>
+					<p>Neptune</p>
+					<input type="range" id="Neptune">
+				</div>
+				</div>
+			</div>
 			<canvas id="canvas"></canvas>
 		</body>
 	</html>
