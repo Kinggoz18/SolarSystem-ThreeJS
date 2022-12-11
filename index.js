@@ -19,15 +19,26 @@ let intersectedObject;
 let sun, sunObject;
 let numOfPlanets = 8;
 let planetControl =[];
-let orbitSpeed = [1, 5, 0.09, 11, 1, 0.05, 5, 10]	//The distance of each planet from the sun
-let Speed = [0.1, 0.05, 0.09, 0.05, 0.1, 0.05, 0.05, 0.050]	//The distance of each planet from the sun
-let orbit = [13, 18, 22, 27, 32, 39, 47, 54]	//The distance of each planet from the sun
+
+let orbitSpeed = [1, 5, 0.09, 11, 1, 0.05, 5, 10]	//Planets initial orbit speed
+let Speed = [0.16, 0.1, 0.056, 0.04, 0.02, 0.01, 0.009, 0.008]	//the speed of the planets orbit
+let orbit = [13, 20, 27, 32, 37, 43, 49, 54]	//The distance of each planet from the sun
+
 let names = ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']
-let cameraTheta = 0;
 let sunloc ={
 	x: 0.1,
 	y: 1.0,
 	z: 0.1
+}
+let details ={
+	Mercury: "<div>Length of Year: 88 earth days</div><div>Moons: 0</div><div class='info'>Our Moon is just slightly larger than Mercury, the smallest planet in our solar system and the nearest to the Sun. Mercury is the quickest planet, circling the Sun every 88 Earth days. </div>",
+	Venus: "<div>Length of Year: 225 earth days</div><div>Moons: 0</div><div class='info'>Most planets rotate slowly in the opposite direction as Venus. Because of its thick atmosphere, which traps heat in a runaway greenhouse effect, it is the hottest planet in our solar system. </div>",
+	Earth: "<div>Length of Year: 365 earth days</div><div>Moons: 1</div><div class='info'>Earth, our home planet, is the only place we know of where living beings may be found. It is also the only planet in our solar system with surface liquid water. </div>",
+	Mars: "<div>Length of Year: 1.88 earth years</div><div>Moons: 2</div><div class='info'>Mars is a sandy, frigid desert planet with a very thin atmosphere. There is significant evidence that Mars was wetter and warmer billions of years ago, with a thicker atmosphere. </div>",
+	Jupiter: "<div>Length of Year: 11.86 earth years</div><div>Moons: 79</div><div class='info'>Jupiter is more than twice as huge as our solar system's other planets combined. The Great Red Spot on Jupiter is a centuries-old storm larger than Earth. </div>",
+	Saturn: "<div>Length of Year: 29.7 earth years</div><div>Moons: 62</div><div class='info'>Saturn is the only planet in our solar system with a stunning, complicated system of ice rings. The rings of the other large planets are stunning, but none are as spectacular as Saturn's. </div>",
+	Uranus: "<div>Length of Year: 84 earth years</div><div>Moons: 27</div><div class='info'>Uranus, the seventh planet from the Sun, spins at approximately a 90-degree inclination from its orbital plane. Uranus seems to rotate on its side as a result of its unusual tilt. </div>",
+	Neptune: "<div>Length of Year: 164.81 earth years</div><div>Moons: 14</div><div class='info'>Neptune, our Sun's eighth and most distant main planet, is dark, frigid, and buffeted by supersonic winds. It was the first planet discovered using mathematics rather than a telescope.</div>",
 }
 
 Init()
@@ -269,10 +280,18 @@ function Picking(event){
     } else {
         intersectedObject = null
     }
-	let i = 0;
+	let objName = document.getElementById('obj');
+	let objInfo = document.getElementById('dts');
     cubes.forEach((o, i) => {
         if (intersectedObject === o) {
 			console.log(planetObj[i].Name);
+			objName.innerText =`${planetObj[i].Name}`;
+			objInfo.innerHTML = `${details[planetObj[i].Name]}`
+			cubes[i].material = planetObj[i].ChangeMesh();
+			cubes[i].material.emissive.setHex( 0xff0000 );
+		  }
+		  else{
+			cubes[i].material = planetObj[i].RevertMesh();
 		  }
     })
 }
