@@ -24,6 +24,15 @@
 			div p{
 				margin-right: 0.5em;
 			}
+			#details{
+				position: absolute;
+        		right: 0px;
+				display: flex;
+				flex-direction: column;
+				padding: 1em;
+				color: white;
+				background-color: gray;
+			}
 		</style>
 		<script type="module" src="./index.js"></script>
 	</head>
@@ -64,6 +73,10 @@
 					<input type="range" min="1" max="100" id="Neptune">
 				</div>
 				</div>
+			</div>
+			<div id="details" class="hide">
+				<h3>Object: </h3>
+				<p>Details</p>
 			</div>
 			<canvas id="canvas"></canvas>
 		</body>

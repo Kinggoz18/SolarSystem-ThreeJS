@@ -5,13 +5,17 @@ import { SolarCamera } from './js/Camera.js';
 import {Planet} from './js/Planet.js'
 import { Sun } from './js/Sun.js';
 
+const raycaster = new THREE.Raycaster()
+let intersects;
+
 
 let MainCamera, xCamera, controls, scene, renderer;
 let SCREEN_WIDTH = window.innerWidth;
 let SCREEN_HEIGHT = window.innerHeight;
-let aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
 let pivot;
 let cubes=[];
+let planetObj =[];
+let intersectedObject;
 let sun, sunObject;
 let numOfPlanets = 8;
 let planetControl =[];
@@ -27,6 +31,7 @@ let sunloc ={
 }
 
 Init()
+document.addEventListener('click', Picking, false)
 
 function Init(){
 
@@ -126,6 +131,7 @@ function InitializePlanet(i, directionalLight){
 			{
 				console.log(names[i])
 				current= new Planet(names[i], 1.2, './js/texture.jpg')
+				planetObj[i] = current;
 				current.GetLocation(1, 1.0, -13);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
@@ -138,6 +144,7 @@ function InitializePlanet(i, directionalLight){
 			{
 				console.log(names[i])
 				current= new Planet(names[i], 1.6, './js/texture2.jpg')
+				planetObj[i] = current;
 				current.GetLocation(1, 1.0, -18);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
@@ -150,6 +157,7 @@ function InitializePlanet(i, directionalLight){
 			{
 				console.log(names[i])
 				current= new Planet(names[i], 1.6, './js/texture3.jpg')
+				planetObj[i] = current;
 				current.GetLocation(1, 1.0, -22);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
@@ -162,6 +170,7 @@ function InitializePlanet(i, directionalLight){
 			{
 				console.log(names[i])
 				current= new Planet(names[i], 1.6, './js/texture4.jpg')
+				planetObj[i] = current;
 				current.GetLocation(1, 1.0, -27);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
@@ -174,6 +183,7 @@ function InitializePlanet(i, directionalLight){
 			{
 				console.log(names[i])
 				current= new Planet(names[i], 1.6, './js/texture5.jpg')
+				planetObj[i] = current;
 				current.GetLocation(1, 1.0, -32);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
@@ -186,6 +196,7 @@ function InitializePlanet(i, directionalLight){
 			{
 				console.log(names[i])
 				current= new Planet(names[i], 1.6, './js/texture6.jpg')
+				planetObj[i] = current;
 				current.GetLocation(1, 1.0, -39);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
@@ -198,6 +209,7 @@ function InitializePlanet(i, directionalLight){
 			{
 				console.log(names[i])
 				current= new Planet(names[i], 1.6, './js/texture7.jpg')
+				planetObj[i] = current;
 				current.GetLocation(1, 1.0, -47);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
@@ -210,6 +222,7 @@ function InitializePlanet(i, directionalLight){
 			{
 				console.log(names[i])
 				current= new Planet(names[i], 1.6, './js/texture8.jpg')
+				planetObj[i] = current;
 				current.GetLocation(1, 1.0, -54);
 				cubes[i] = current.Planet;
 				scene.add(cubes[i]);
@@ -239,4 +252,27 @@ function GUIControl(){
 			Speed[i]=value;
 		})
 	}
+}
+
+function Picking(event){
+    raycaster.setFromCamera(
+        {
+            x: (event.clientX / renderer.domElement.clientWidth) * 2 - 1,
+            y: -(event.clientY / renderer.domElement.clientHeight) * 2 + 1
+        },
+        MainCamera
+    )
+    intersects = raycaster.intersectObjects(cubes, false)
+
+    if (intersects.length > 0) {
+        intersectedObject = intersects[0].object
+    } else {
+        intersectedObject = null
+    }
+	let i = 0;
+    cubes.forEach((o, i) => {
+        if (intersectedObject === o) {
+			console.log(planetObj[i].Name);
+		  }
+    })
 }

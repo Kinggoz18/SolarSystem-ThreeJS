@@ -18,6 +18,9 @@ export class Planet{
 	get Planet(){
 		return this.planet;
 	}
+	get Name(){
+		return this.name;
+	}
 	//Get the orbit
 	get Orbit(){
 		return this.orbit;
