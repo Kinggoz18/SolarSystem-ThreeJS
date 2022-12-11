@@ -14,6 +14,7 @@ let pivot;
 let cubes=[];
 let sun, sunObject;
 let numOfPlanets = 8;
+let planetControl =[];
 let orbitSpeed = [1, 5, 0.09, 11, 1, 0.05, 5, 10]	//The distance of each planet from the sun
 let Speed = [0.1, 0.05, 0.09, 0.05, 0.1, 0.05, 0.05, 0.050]	//The distance of each planet from the sun
 let orbit = [13, 18, 22, 27, 32, 39, 47, 54]	//The distance of each planet from the sun
@@ -54,7 +55,7 @@ function Init(){
 
 	//Setup camera controls
    	OrbitControl();
-
+	GUIControl();
 	//Camera
 	window.addEventListener( 'resize', onWindowResize );
 	render()
@@ -116,7 +117,6 @@ function render() {
 	renderer.render(scene, MainCamera);
 	requestAnimationFrame(render);
 }
-
 function InitializePlanet(i, directionalLight){
 	let current;
 	//Switch statement to set the objects position
@@ -224,5 +224,18 @@ function InitializePlanet(i, directionalLight){
 				break;
 			}
 		
+	}
+}
+function GUIControl(){
+	for(let i = 0; i< numOfPlanets; i++){
+		planetControl[i] = document.getElementById(`${names[i]}`);
+	}
+	for(let i=0; i<numOfPlanets; i++)
+	{
+		planetControl[i].addEventListener('input', (event)=>{
+			let value = planetControl[i].value/100;
+			console.log(value)
+			Speed[i]=value;
+		})
 	}
 }
