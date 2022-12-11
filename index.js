@@ -226,6 +226,7 @@ function InitializePlanet(i, directionalLight){
 		
 	}
 }
+
 function GUIControl(){
 	for(let i = 0; i< numOfPlanets; i++){
 		planetControl[i] = document.getElementById(`${names[i]}`);
